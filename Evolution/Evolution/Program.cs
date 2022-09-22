@@ -1,17 +1,21 @@
 namespace Evolution;
 
 using Providers;
+using Screens;
 
 internal static class Program
 {
-    /// <summary>
-    ///  The main entry point for the application.
-    /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
-        RandomProvider.SetSeed(27);
+        Configurations();
+        
         ApplicationConfiguration.Initialize();
         Application.Run(new Evolution());
+    }
+
+    private static void Configurations()
+    {
+        RandomProvider.SetSeed(27);
     }
 }

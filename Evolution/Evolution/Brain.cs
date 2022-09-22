@@ -1,11 +1,9 @@
 ﻿namespace Evolution;
 
-public struct Brain
+public class Brain
 {
-    Genome Genome { get; set; }
-
-    public Brain()
+    public Brain(Genome genome)
     {
-        Genome = new Genome();
+        
     }
 }

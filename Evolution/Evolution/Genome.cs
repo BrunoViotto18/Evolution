@@ -1,38 +1,46 @@
-﻿namespace Evolution;
+﻿using System.Text;
+
+namespace Evolution;
 
 using Providers;
-using System.Text;
 
-public struct Genome
+// (0)                (0000000)      (0)                     (0000000)           (00000000 00000000)
+// SourceNeuronType - SourceNeuron - DestinationNeuronType - DestinationNeuron - ConnectionWeight
+public class Genome
 {
-    private static readonly string _letters = "0123456789ABCDEF";
-    char[] genes { get; set; }
-
+    private const string HexadecimalCharacters = "0123456789ABCDEF";
+    private readonly char[] _genes;
+    private static char RandomHexadecimalCharacter => HexadecimalCharacters[RandomProvider.Rng.Next(0, HexadecimalCharacters.Length)];
+    public bool SourceNeuronType => ((byte)_genes[0] & 0b10000000) != 0;
+    
+    
     public Genome(int genomeLength)
-        => genes = new char[genomeLength * 8];
-
-    public void GenerateRandomGenes()
     {
-        for (int i = 0; i < genes.Length / 8; i++)
-            for (int j = 0; j < 8; j++)
-                genes[i * 8 + j] = _letters[RandomProvider.Rng.Next(0, _letters.Length)];
+        _genes = new char[genomeLength * 8];
+        GenerateRandomGenes();
     }
 
+    
+    public void GenerateRandomGenes()
+    {
+        for (var i = 0; i < _genes.Length; i++)
+            _genes[i] = RandomHexadecimalCharacter;
+    }
+    
     public void Mutate(int mutationChance)
     {
-        for (int i = 0; i < genes.Length / 8; i++)
-            for (int j = 0; j < 8; j++)
-                if (RandomProvider.Rng.Next(0, 10000) < mutationChance * 100)
-                    genes[i * 8 + j] = _letters[RandomProvider.Rng.Next(0, _letters.Length)];
+        for (var i = 0; i < _genes.Length; i++)
+            if (RandomProvider.Rng.Next(0, 10000) < mutationChance * 100)
+                _genes[i] = RandomHexadecimalCharacter;
     }
 
     public override string ToString()
     {
         var builder = new StringBuilder();
 
-        for (int i = 0; i < genes.Length / 8; i++)
+        for (var i = 0; i < _genes.Length / 8; i++)
         {
-            builder.Append(genes[i..(i + 8)]);
+            builder.Append(_genes[i..(i + 8)]);
             builder.Append(' ');
         }
 

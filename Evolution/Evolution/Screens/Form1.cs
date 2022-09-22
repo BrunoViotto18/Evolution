@@ -1,4 +1,4 @@
-namespace Evolution;
+namespace Evolution.Screens;
 
 public partial class Evolution : Form
 {
@@ -8,9 +8,9 @@ public partial class Evolution : Form
 
         Load += delegate
         {
-            Genome g = new Genome(4);
+            var g = new Genome(4);
             g.GenerateRandomGenes();
-            MessageBox.Show($"{g}");
+            MessageBox.Show($"{g}\n{(byte)129 & 0b10000000}");
         };
     }
 }
